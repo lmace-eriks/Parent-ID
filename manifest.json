@@ -1,7 +1,7 @@
 {
   "vendor": "shredshop",
   "name": "parentid",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "title": "ParentId",
   "description": "ParentId component",
   "defaultLocale": "pt-BR",
