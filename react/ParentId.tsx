@@ -69,6 +69,9 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
   })
 
   const setBanner = (index: number) => {
+    // @ts-expect-error
+    const windowWidth: number = window.innerWidth;
+
     setBannerMessage(promos[index].text.bannerMessage);
     setBannerMessageFontSize(promos[index].text.bannerMessageFontSize);
     setBannerSubMessage(promos[index].text.bannerSubMessage);
@@ -81,16 +84,22 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
       setBannerImage(promos[index].image.src);
       setImageDisplay("block");
       setMessageWrapperWidth("50%");
-      if (promos[index].image.imageLeftOrRight) {
-        setImageLeftOrRight(promos[index].image.imageLeftOrRight);
+      if (windowWidth >= 1026) {
+        if (promos[index].image.imageLeftOrRight) {
+          setImageLeftOrRight(promos[index].image.imageLeftOrRight);
+        } else {
+          setImageLeftOrRight("left");
+        }
       } else {
-        setImageLeftOrRight("left");
+        setImageDisplay("none");
+        setMessageWrapperWidth("100%");
       }
     } else {
       setImageDisplay("none");
       setMessageWrapperWidth("100%");
     }
     setShowbanner(true);
+
   }
 
   if (showBanner) {
