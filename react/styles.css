@@ -1,0 +1,76 @@
+.fullWidth {
+    padding-top: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.bannerLink {
+    display: block;
+    width: 75%;
+    text-decoration: none;
+}
+
+.bannerWrapper {
+    width: 100%;
+    height: 6.5rem;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid black;
+}
+
+.bannerWrapper * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.bannerImage {
+    width: 50%;
+    object-fit: cover;
+}
+
+.messageWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.message, .subMessage {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    padding: 0 0.5rem;
+}
+
+/* Mobile Rules - LM */
+@media (max-width: 1025px) {
+    .fullWidth {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .bannerLink {
+        width: 90%;
+    }
+
+    .bannerWrapper {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+    }
+
+    .bannerImage {
+        display: none;
+    }
+
+    .messageWrapper {
+        width: 100%;
+    }
+}
