@@ -9,11 +9,17 @@ interface ParentIdProps {
 }
 
 interface PromoObject {
+  date?: DateObject,
   text: TextObject,
   image: ImageObject
   bannerLink: string,
   backgroundColor: string,
   parentList: Array<string>
+}
+
+interface DateObject {
+  from: string,
+  to: string
 }
 
 interface TextObject {
@@ -43,8 +49,30 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
   const [bannerTextColor, setBannerTextColor] = useState<string>("");
   const [bannerBackgroundColor, setBannerBackgroundColor] = useState<string>("");
 
+  // const lookInDom = () => {
+  //   //@ts-expect-error
+  //   const templates: Array<any> = document.getElementsByTagName("template");
+  //   const lookingFor: string = "__STATE__";
+
+  //   let statePos: number = 0;
+
+  //   for (let i = 0; i < templates.length; i++) {
+  //     if (templates[i].attributes[1].nodeValue === lookingFor) {
+  //       statePos = i;
+  //       break;
+  //     };
+  //   }
+  //   const innerHTML = templates[statePos].innerHTML;
+
+  //   const lookForPromo = new RegExp("Shred Skate Decks For bearing gwp", "i");
+  //   const promoActive = lookForPromo.test(innerHTML);
+  //   console.log({ promoActive });
+
+  // }
+
   useEffect(() => {
     console.clear();
+
     // @ts-expect-error
     const currentUserURL: string = window.location.href.split(".com/")[1];
 
@@ -69,24 +97,35 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
   })
 
   const setBanner = (index: number) => {
+    const myPromo = promos[index];
+
+    if (myPromo.date) {
+      const fromDate = Date.parse(myPromo.date.from);
+      const toDate = Date.parse(myPromo.date.to);
+      const todayDate = Date.now();
+
+      if (fromDate > todayDate) return; // Promo Not Yet Active
+      if (todayDate > toDate) return; // Promo Expired
+    }
+
+    setBannerMessage(myPromo.text.bannerMessage);
+    setBannerMessageFontSize(myPromo.text.bannerMessageFontSize);
+    setBannerSubMessage(myPromo.text.bannerSubMessage);
+    setBannerSubMessageFontSize(myPromo.text.bannerSubMessageFontSize);
+    setBannerLink(myPromo.bannerLink || "#");
+    setBannerTextColor(myPromo.text.textColor);
+    setBannerBackgroundColor(myPromo.backgroundColor);
+
     // @ts-expect-error
     const windowWidth: number = window.innerWidth;
 
-    setBannerMessage(promos[index].text.bannerMessage);
-    setBannerMessageFontSize(promos[index].text.bannerMessageFontSize);
-    setBannerSubMessage(promos[index].text.bannerSubMessage);
-    setBannerSubMessageFontSize(promos[index].text.bannerSubMessageFontSize);
-    setBannerLink(promos[index].bannerLink || "#");
-    setBannerTextColor(promos[index].text.textColor);
-    setBannerBackgroundColor(promos[index].backgroundColor);
-
-    if (promos[index].image) {
-      setBannerImage(promos[index].image.src);
+    if (myPromo.image) {
+      setBannerImage(myPromo.image.src);
       setImageDisplay("block");
       setMessageWrapperWidth("50%");
       if (windowWidth >= 1026) {
-        if (promos[index].image.imageLeftOrRight) {
-          setImageLeftOrRight(promos[index].image.imageLeftOrRight);
+        if (myPromo.image.imageLeftOrRight) {
+          setImageLeftOrRight(myPromo.image.imageLeftOrRight);
         } else {
           setImageLeftOrRight("left");
         }
@@ -99,7 +138,6 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
       setMessageWrapperWidth("100%");
     }
     setShowbanner(true);
-
   }
 
   if (showBanner) {
