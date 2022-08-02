@@ -49,27 +49,6 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
   const [bannerTextColor, setBannerTextColor] = useState<string>("");
   const [bannerBackgroundColor, setBannerBackgroundColor] = useState<string>("");
 
-  // const lookInDom = () => {
-  //   //@ts-expect-error
-  //   const templates: Array<any> = document.getElementsByTagName("template");
-  //   const lookingFor: string = "__STATE__";
-
-  //   let statePos: number = 0;
-
-  //   for (let i = 0; i < templates.length; i++) {
-  //     if (templates[i].attributes[1].nodeValue === lookingFor) {
-  //       statePos = i;
-  //       break;
-  //     };
-  //   }
-  //   const innerHTML = templates[statePos].innerHTML;
-
-  //   const lookForPromo = new RegExp("Shred Skate Decks For bearing gwp", "i");
-  //   const promoActive = lookForPromo.test(innerHTML);
-  //   console.log({ promoActive });
-
-  // }
-
   useEffect(() => {
     console.clear();
 
@@ -112,7 +91,7 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
     setBannerMessageFontSize(myPromo.text.bannerMessageFontSize);
     setBannerSubMessage(myPromo.text.bannerSubMessage);
     setBannerSubMessageFontSize(myPromo.text.bannerSubMessageFontSize);
-    setBannerLink(myPromo.bannerLink || "#");
+    setBannerLink(myPromo.bannerLink || "");
     setBannerTextColor(myPromo.text.textColor);
     setBannerBackgroundColor(myPromo.backgroundColor);
 
@@ -140,19 +119,21 @@ const ParentId: StorefrontFunctionComponent<ParentIdProps> = ({ promos }) => {
     setShowbanner(true);
   }
 
+  console.log(bannerLink);
+
+  const innerBanner = <div className={styles.bannerWrapper}>
+    {imageLeftOrRIght === "left" && <img src={bannerImage} style={{ display: imageDisplay }} className={styles.bannerImage} />}
+    <div style={{ backgroundColor: bannerBackgroundColor, width: messageWrapperWidth }} className={styles.messageWrapper}>
+      <p style={{ color: bannerTextColor, fontSize: bannerMessageFontSize }} className={styles.message}>{bannerMessage}</p>
+      <p style={{ color: bannerTextColor, fontSize: bannerSubMessageFontSize }} className={styles.subMessage}>{bannerSubMessage}</p>
+    </div>
+    {imageLeftOrRIght === "right" && <img src={bannerImage} style={{ display: imageDisplay }} className={styles.bannerImage} />}
+  </div>;
+
   if (showBanner) {
     return (
       <div className={styles.fullWidth}>
-        <a className={styles.bannerLink} href={bannerLink} target="_blank" rel="noreferrer">
-          <div className={styles.bannerWrapper}>
-            {imageLeftOrRIght === "left" && <img src={bannerImage} style={{ display: imageDisplay }} className={styles.bannerImage} />}
-            <div style={{ backgroundColor: bannerBackgroundColor, width: messageWrapperWidth }} className={styles.messageWrapper}>
-              <p style={{ color: bannerTextColor, fontSize: bannerMessageFontSize }} className={styles.message}>{bannerMessage}</p>
-              <p style={{ color: bannerTextColor, fontSize: bannerSubMessageFontSize }} className={styles.subMessage}>{bannerSubMessage}</p>
-            </div>
-            {imageLeftOrRIght === "right" && <img src={bannerImage} style={{ display: imageDisplay }} className={styles.bannerImage} />}
-          </div>
-        </a>
+        {bannerLink ? <a className={styles.bannerLink} href={bannerLink} target="_blank" rel="noreferrer">{innerBanner}</a> : innerBanner}
       </div>
     )
   } else {
